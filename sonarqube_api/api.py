@@ -23,6 +23,7 @@ class SonarAPIHandler(object):
     RULES_ACTIVATION_ENDPOINT = '/api/qualityprofiles/activate_rule'
     RULES_LIST_ENDPOINT = '/api/rules/search'
     RULES_CREATE_ENDPOINT = '/api/rules/create'
+    PROJECT_DELETE_ENDPOINT = '/api/projects'
 
     # Debt data params (characteristics and metric)
     DEBT_CHARACTERISTICS = (
@@ -182,6 +183,20 @@ class SonarAPIHandler(object):
 
         # Make call (might raise exception) and return
         res = self._make_call('post', self.RULES_CREATE_ENDPOINT, **data)
+        return res
+
+    def delete_project(self, project_id):
+        """
+        Delete a project from Sonar.
+
+        :param project_id: Key which indicates the project to remove.
+        @return: request response
+        """
+        data = {}
+
+        # Make call (might raise exception) and return
+        proj_endpoint = '{}/{}'.format(self.PROJECT_DELETE_ENDPOINT, project_id)
+        res = self._make_call('delete', proj_endpoint, **data)
         return res
 
     def get_metrics(self, fields=None):
